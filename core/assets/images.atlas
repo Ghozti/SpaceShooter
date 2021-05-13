@@ -1,0 +1,76 @@
+
+images.png
+size: 8192,4096
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Starscape00
+  rotate: false
+  xy: 0, 194
+  size: 1080, 3840
+  orig: 1080, 3840
+  offset: 0, 0
+  index: -1
+Starscape01
+  rotate: false
+  xy: 1080, 194
+  size: 1080, 3840
+  orig: 1080, 3840
+  offset: 0, 0
+  index: -1
+Starscape02
+  rotate: false
+  xy: 2160, 194
+  size: 1080, 3840
+  orig: 1080, 3840
+  offset: 0, 0
+  index: -1
+Starscape03
+  rotate: false
+  xy: 3240, 194
+  size: 1080, 3840
+  orig: 1080, 3840
+  offset: 0, 0
+  index: -1
+enemyRed3
+  rotate: false
+  xy: 143, 110
+  size: 103, 84
+  orig: 103, 84
+  offset: 0, 0
+  index: -1
+laserBlue01
+  rotate: false
+  xy: 4320, 3872
+  size: 9, 54
+  orig: 9, 54
+  offset: 0, 0
+  index: -1
+laserRed01
+  rotate: false
+  xy: 4453, 3980
+  size: 9, 54
+  orig: 9, 54
+  offset: 0, 0
+  index: -1
+playerShip2_blue
+  rotate: false
+  xy: 0, 0
+  size: 112, 75
+  orig: 112, 75
+  offset: 0, 0
+  index: -1
+shield1
+  rotate: false
+  xy: 4320, 3926
+  size: 133, 108
+  orig: 133, 108
+  offset: 0, 0
+  index: -1
+shield2
+  rotate: false
+  xy: 0, 75
+  size: 143, 119
+  orig: 143, 119
+  offset: 0, 0
+  index: -1

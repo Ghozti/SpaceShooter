@@ -3,7 +3,10 @@ package ghozti.game;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureArray;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -14,7 +17,9 @@ public class Screen implements com.badlogic.gdx.Screen {
     private Viewport viewport;
     //Game
     private SpriteBatch batch;
-    private Texture[] background;
+    private TextureRegion[] background;
+    private TextureRegion playerShip, PlayerShield,enemyShip,enemyShield,playerLaser,enemyLaser;
+    private TextureAtlas textureAtlas;
     //Timing
     private float[] backgroundOffset = {0,0,0,0};
     private float backgroundMaxScrollSpeed;
