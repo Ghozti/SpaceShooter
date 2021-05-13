@@ -14,9 +14,10 @@ public class Screen implements com.badlogic.gdx.Screen {
     private Viewport viewport;
     //Game
     private SpriteBatch batch;
-    private Texture background;
+    private Texture[] background;
     //Timing
-    private int backgroundOffset;
+    private float[] backgroundOffset = {0,0,0,0};
+    private float backgroundMaxScrollSpeed;
     //World
     private final int WORLD_WIDTH = 72;
     private final int WORLD_HEIGHT = 128;
@@ -26,9 +27,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 
         camera = new OrthographicCamera();//ortho cam is a 2d camera with no 3d features. Perfect for 2d games
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);//what the user sees. Takes in 3 param. w,h,cam
-        background = new Texture("darkPurpleStarscape.png");
-        backgroundOffset = 0;
-
+        background = new Texture[4];
+        background[0] = new Texture("Starscape00.png");
+        background[1] = new Texture("Starscape01.png");
+        background[2] = new Texture("Starscape02.png");
+        background[3] = new Texture("Starscape03.png");
+        backgroundMaxScrollSpeed = (float)WORLD_HEIGHT/4;
         batch = new SpriteBatch();
 
     }
@@ -44,11 +48,23 @@ public class Screen implements com.badlogic.gdx.Screen {
         batch.begin();//always include begin and end in a render method
 
         //Scrolling bg
-        backgroundOffset++;
-        if(backgroundOffset % WORLD_HEIGHT == 0) backgroundOffset = 0;
-
-        batch.draw(background,0,-backgroundOffset,WORLD_WIDTH,WORLD_HEIGHT);
+        renderBackground(delta);
         batch.end();
+    }
+
+    private void renderBackground(float delta){
+        backgroundOffset[0] += delta*backgroundMaxScrollSpeed/8;
+        backgroundOffset[1] += delta*backgroundMaxScrollSpeed/4;
+        backgroundOffset[2] += delta*backgroundMaxScrollSpeed/2;
+        backgroundOffset[3] += delta*backgroundMaxScrollSpeed;
+
+        for(int layer = 0; layer < backgroundOffset.length; layer++){
+            if (backgroundOffset[layer] > WORLD_HEIGHT){
+                backgroundOffset[layer] = 0;
+            }
+            batch.draw(background[layer],0,-backgroundOffset[layer],WORLD_WIDTH,WORLD_HEIGHT);
+            batch.draw(background[layer],0,-backgroundOffset[layer] + WORLD_HEIGHT,WORLD_WIDTH,WORLD_HEIGHT);
+        }
     }
 
     @Override//for when you change the window size and runs and the beginning of the application
