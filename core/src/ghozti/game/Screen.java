@@ -32,11 +32,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 
         camera = new OrthographicCamera();//ortho cam is a 2d camera with no 3d features. Perfect for 2d games
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);//what the user sees. Takes in 3 param. w,h,cam
-        background = new Texture[4];
-        background[0] = new Texture("Starscape00.png");
-        background[1] = new Texture("Starscape01.png");
-        background[2] = new Texture("Starscape02.png");
-        background[3] = new Texture("Starscape03.png");
+        textureAtlas = new TextureAtlas("images.atlas");
+
+        background = new TextureRegion[4];
+        background[0] = textureAtlas.findRegion("Starscape00");
+        background[1] = textureAtlas.findRegion("Starscape01");
+        background[2] = textureAtlas.findRegion("Starscape02");
+        background[3] = textureAtlas.findRegion("Starscape03");
         backgroundMaxScrollSpeed = (float)WORLD_HEIGHT/4;
         batch = new SpriteBatch();
 
