@@ -16,7 +16,9 @@ public class Ship {
     //graphics
     TextureRegion ship,shieldT;
 
-    public Ship(float speed, int shield, float x, float y, float width, float height, TextureRegion ship, TextureRegion shieldT) {
+    boolean enemy;
+
+    public Ship(float speed, int shield, float x, float y, float width, float height, TextureRegion ship, TextureRegion shieldT,boolean enemy) {
         this.speed = speed;
         this.shield = shield;
         this.x = x - width/2;
@@ -25,12 +27,13 @@ public class Ship {
         this.height = height;
         this.ship = ship;
         this.shieldT = shieldT;
+        this.enemy = enemy;
     }
 
     public void draw(Batch batch){
         batch.draw(ship,x,y,width,height);
-        if (shield  > 0){
-            batch.draw(shieldT,x,y,width,height);
-        }
+        if (shield  > 0 && enemy){
+            batch.draw(shieldT,x,y-3,width,height);
+        }else if(shield > 0) batch.draw(shieldT,x,y,width,height);
     }
 }

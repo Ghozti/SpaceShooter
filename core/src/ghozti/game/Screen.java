@@ -18,7 +18,7 @@ public class Screen implements com.badlogic.gdx.Screen {
     //Game
     private SpriteBatch batch;
     private TextureRegion[] background;
-    private TextureRegion playerShip, PlayerShield,enemyShip,enemyShield,playerLaser,enemyLaser;
+    private TextureRegion playerShip, playerShield,enemyShip,enemyShield,playerLaser,enemyLaser;
     private TextureAtlas textureAtlas;
     //Timing
     private float[] backgroundOffset = {0,0,0,0};
@@ -26,6 +26,9 @@ public class Screen implements com.badlogic.gdx.Screen {
     //World
     private final int WORLD_WIDTH = 72;
     private final int WORLD_HEIGHT = 128;
+    //objects
+    private Ship player;
+    private Ship enemy;
 
 
     Screen(){
@@ -40,8 +43,18 @@ public class Screen implements com.badlogic.gdx.Screen {
         background[2] = textureAtlas.findRegion("Starscape02");
         background[3] = textureAtlas.findRegion("Starscape03");
         backgroundMaxScrollSpeed = (float)WORLD_HEIGHT/4;
-        batch = new SpriteBatch();
 
+        playerShip = textureAtlas.findRegion("playerShip2_blue");
+        enemyShip = textureAtlas.findRegion("enemyRed3");
+        playerShield = textureAtlas.findRegion("shield1");
+        enemyShield = textureAtlas.findRegion("shield2");
+        enemyShield.flip(false,true);
+        playerLaser = textureAtlas.findRegion("laserBlue01");
+        enemyLaser = textureAtlas.findRegion("laserRed01");
+
+        player = new Ship(2,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,false);
+        enemy = new Ship(2,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,true);
+        batch = new SpriteBatch();
     }
 
 
@@ -56,6 +69,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 
         //Scrolling bg
         renderBackground(delta);
+
+        //ships
+        player.draw(batch);
+        enemy.draw(batch);
+
+
         batch.end();
     }
 
