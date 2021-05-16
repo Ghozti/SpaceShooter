@@ -2,6 +2,7 @@ package ghozti.game;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 abstract class Ship {
 
@@ -47,6 +48,10 @@ abstract class Ship {
 
     public abstract Laser[] fireLasers();
 
+    public boolean intersects(Rectangle rectangle){
+        Rectangle thisRect = new Rectangle(x,y,width,height);
+        return thisRect.overlaps(rectangle);
+    }
 
     public void draw(Batch batch){
         batch.draw(ship,x,y,width,height);

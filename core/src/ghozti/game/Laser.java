@@ -2,6 +2,9 @@ package ghozti.game;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+
+import java.awt.*;
 
 public class Laser {
 
@@ -26,5 +29,9 @@ public class Laser {
 
     public void draw(Batch batch){
         batch.draw(region,x - width/2,y,width,height);
+    }
+
+    public Rectangle getBoundingBox(){
+        return new Rectangle(x,y,width,height);
     }
 }

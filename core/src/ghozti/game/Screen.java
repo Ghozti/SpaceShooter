@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -71,19 +72,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
     }
 
-    @Override
-    public void render(float delta) {
-        batch.begin();//always include begin and end in a render method
-        player.update(delta);
-        enemy.update(delta);
-
-        //Scrolling bg
-        renderBackground(delta);
-
-        //ships
-        player.draw(batch);
-        enemy.draw(batch);
-
+    private void renderLasers(float delta){
         //laser
         if (player.canFireLaser()){
             Laser[] lasers = player.fireLasers();
@@ -115,6 +104,45 @@ public class Screen implements com.badlogic.gdx.Screen {
             laser.y -= laser.speed*delta;
             if (laser.y + laser.height < 0) iterator.remove();
         }
+    }
+
+    private void detectCollision(){
+        ListIterator<Laser> iterator = playerLaserL.listIterator();
+        while (iterator.hasNext()){
+            Laser laser = iterator.next();
+            if (enemy.intersects(laser.getBoundingBox())) {
+                iterator.remove();//removes last item we are working with
+            }
+        }
+        iterator = enemyLaserL.listIterator();
+        while (iterator.hasNext()){
+            Laser laser = iterator.next();
+            if (player.intersects(laser.getBoundingBox())) {
+                iterator.remove();//removes last item we are working with
+            }
+        }
+    }
+
+    private void renderExplosions(float delta){
+
+    }
+
+    @Override
+    public void render(float delta) {
+        batch.begin();//always include begin and end in a render method
+        player.update(delta);
+        enemy.update(delta);
+
+        //Scrolling bg
+        renderBackground(delta);
+
+        //ships
+        player.draw(batch);
+        enemy.draw(batch);
+        renderLasers(delta);
+        detectCollision();
+        renderExplosions(delta);
+
         batch.end();
     }
 
