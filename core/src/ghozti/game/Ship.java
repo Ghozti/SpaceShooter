@@ -62,4 +62,8 @@ abstract class Ship {
             batch.draw(shieldT,boundingRect.x,boundingRect.y-3,boundingRect.width,boundingRect.height);
         }else if(shield > 0) batch.draw(shieldT,boundingRect.x,boundingRect.y,boundingRect.width,boundingRect.height);
     }
+
+    public void trasnlate(float x, float y){
+        boundingRect.setPosition(boundingRect.x+x,boundingRect.y+y);
+    }
 }

@@ -1,14 +1,14 @@
 package ghozti.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -129,9 +129,34 @@ public class Screen implements com.badlogic.gdx.Screen {
 
     }
 
+    private void detectInput(float delta){
+        float leftLimit = -player.boundingRect.x,rightLimit = WORLD_WIDTH-player.boundingRect.x-player.boundingRect.width,upLimit = WORLD_HEIGHT/2 - player.boundingRect.y - player.boundingRect.height,downLimit = -player.boundingRect.y;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && rightLimit > 0){
+            float xChange = player.speed*delta;
+            xChange = Math.min(xChange,rightLimit);
+            player.trasnlate(xChange,0f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && leftLimit < 0){
+            float xChange = -player.speed*delta;
+            xChange = Math.max(xChange,leftLimit);
+            player.trasnlate(xChange,0f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && upLimit > 0){
+            float yChange = player.speed*delta;
+            yChange = Math.min(yChange,upLimit);
+            player.trasnlate(0f,yChange);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && downLimit < 0){
+            float yChange = -player.speed*delta;
+            yChange = Math.max(yChange,downLimit);
+            player.trasnlate(0f,yChange);
+        }
+    }
+
     @Override
     public void render(float delta) {
         batch.begin();//always include begin and end in a render method
+        detectInput(delta);
         player.update(delta);
         enemy.update(delta);
 
