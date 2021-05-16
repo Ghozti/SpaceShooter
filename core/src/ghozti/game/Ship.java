@@ -3,7 +3,7 @@ package ghozti.game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Ship {
+abstract class Ship {
 
     //ship characteristics
     float speed;//world units per second
@@ -16,7 +16,7 @@ public class Ship {
     //graphics
     TextureRegion ship,shieldT,laserTexture;
     //laser stuff
-    float laserW,laserH, timeBetweenShots,timeSinceLAstShot = 0, laserSpeed;
+    float laserW,laserH, timeBetweenShots,timeSinceLastShot = 0, laserSpeed;
 
     boolean enemy;
 
@@ -36,6 +36,17 @@ public class Ship {
         this.timeBetweenShots = timeBetweenShots;
         this.laserSpeed = laserSpeed;
     }
+
+    public void update(float delta){
+        timeSinceLastShot += delta;
+    }
+
+    public boolean canFireLaser(){
+        return timeSinceLastShot - timeBetweenShots >= 0;
+    }
+
+    public abstract Laser[] fireLasers();
+
 
     public void draw(Batch batch){
         batch.draw(ship,x,y,width,height);
