@@ -12,26 +12,18 @@ public class Laser {
     float speed;
 
     //positioning
-    float x,y;
-    float width,height;
+    Rectangle boundingRect;
 
     //graphics
     TextureRegion region;
 
     public Laser(float x, float y, float width, float height,float speed,  TextureRegion region) {
         this.speed = speed;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        boundingRect = new Rectangle(x-width/2,y,width,height);
         this.region = region;
     }
 
     public void draw(Batch batch){
-        batch.draw(region,x - width/2,y,width,height);
-    }
-
-    public Rectangle getBoundingBox(){
-        return new Rectangle(x,y,width,height);
+        batch.draw(region,boundingRect.x,boundingRect.y,boundingRect.width,boundingRect.height);
     }
 }

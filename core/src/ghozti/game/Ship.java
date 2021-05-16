@@ -11,8 +11,7 @@ abstract class Ship {
     int shield;
 
     //position
-    float x,y;
-    float width, height;
+    Rectangle boundingRect;
 
     //graphics
     TextureRegion ship,shieldT,laserTexture;
@@ -24,10 +23,9 @@ abstract class Ship {
     public Ship(float speed, int shield, float x, float y, float width, float height, TextureRegion ship, TextureRegion shieldT,TextureRegion laserTexture,boolean enemy,float laserW,float laserH,float timeBetweenShots,float laserSpeed) {
         this.speed = speed;
         this.shield = shield;
-        this.x = x - width/2;
-        this.y = y - width/2;
-        this.width = width;
-        this.height = height;
+
+        this.boundingRect = new Rectangle(x,y,width,height);
+
         this.ship = ship;
         this.shieldT = shieldT;
         this.laserTexture = laserTexture;
@@ -49,8 +47,7 @@ abstract class Ship {
     public abstract Laser[] fireLasers();
 
     public boolean intersects(Rectangle rectangle){
-        Rectangle thisRect = new Rectangle(x,y,width,height);
-        return thisRect.overlaps(rectangle);
+        return boundingRect.overlaps(rectangle);
     }
 
     public void hit(Laser laser){
@@ -60,9 +57,9 @@ abstract class Ship {
     }
 
     public void draw(Batch batch){
-        batch.draw(ship,x,y,width,height);
+        batch.draw(ship,boundingRect.x,boundingRect.y,boundingRect.width,boundingRect.height);
         if (shield  > 0 && enemy){
-            batch.draw(shieldT,x,y-3,width,height);
-        }else if(shield > 0) batch.draw(shieldT,x,y,width,height);
+            batch.draw(shieldT,boundingRect.x,boundingRect.y-3,boundingRect.width,boundingRect.height);
+        }else if(shield > 0) batch.draw(shieldT,boundingRect.x,boundingRect.y,boundingRect.width,boundingRect.height);
     }
 }

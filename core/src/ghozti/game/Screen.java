@@ -93,16 +93,16 @@ public class Screen implements com.badlogic.gdx.Screen {
         while (iterator.hasNext()){
             Laser laser = iterator.next();
             laser.draw(batch);
-            laser.y += laser.speed*delta;
-            if (laser.y > WORLD_HEIGHT) iterator.remove();
+            laser.boundingRect.y += laser.speed*delta;
+            if (laser.boundingRect.y > WORLD_HEIGHT) iterator.remove();
         }
 
         iterator = enemyLaserL.listIterator();
         while (iterator.hasNext()){
             Laser laser = iterator.next();
             laser.draw(batch);
-            laser.y -= laser.speed*delta;
-            if (laser.y + laser.height < 0) iterator.remove();
+            laser.boundingRect.y -= laser.speed*delta;
+            if (laser.boundingRect.y + laser.boundingRect.height < 0) iterator.remove();
         }
     }
 
@@ -110,7 +110,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         ListIterator<Laser> iterator = playerLaserL.listIterator();
         while (iterator.hasNext()){
             Laser laser = iterator.next();
-            if (enemy.intersects(laser.getBoundingBox())) {
+            if (enemy.intersects(laser.boundingRect)) {
                 player.hit(laser);
                 iterator.remove();//removes last item we are working with
             }
@@ -118,7 +118,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         iterator = enemyLaserL.listIterator();
         while (iterator.hasNext()){
             Laser laser = iterator.next();
-            if (player.intersects(laser.getBoundingBox())) {
+            if (player.intersects(laser.boundingRect)) {
                 enemy.hit(laser);
                 iterator.remove();//removes last item we are working with
             }
