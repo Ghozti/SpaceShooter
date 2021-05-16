@@ -53,6 +53,12 @@ abstract class Ship {
         return thisRect.overlaps(rectangle);
     }
 
+    public void hit(Laser laser){
+        if (shield > 0){
+            shield--;
+        }
+    }
+
     public void draw(Batch batch){
         batch.draw(ship,x,y,width,height);
         if (shield  > 0 && enemy){

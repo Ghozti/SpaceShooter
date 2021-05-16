@@ -111,6 +111,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         while (iterator.hasNext()){
             Laser laser = iterator.next();
             if (enemy.intersects(laser.getBoundingBox())) {
+                player.hit(laser);
                 iterator.remove();//removes last item we are working with
             }
         }
@@ -118,6 +119,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         while (iterator.hasNext()){
             Laser laser = iterator.next();
             if (player.intersects(laser.getBoundingBox())) {
+                enemy.hit(laser);
                 iterator.remove();//removes last item we are working with
             }
         }
