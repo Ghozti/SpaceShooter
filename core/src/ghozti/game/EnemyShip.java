@@ -10,6 +10,10 @@ public class EnemyShip extends Ship{
 
     @Override
     public Laser[] fireLasers() {
-        return new Laser[0];
+        Laser[] laser = new Laser[2];
+        laser[0] = new Laser(x+width*0.18f,y,laserW,laserH,laserSpeed,laserTexture);
+        laser[1] = new Laser(x+width*0.82f,y,laserW,laserH,laserSpeed,laserTexture);
+        timeSinceLastShot = 0;
+        return laser;
     }
 }

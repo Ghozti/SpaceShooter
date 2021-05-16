@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Screen implements com.badlogic.gdx.Screen {
 
@@ -56,8 +57,8 @@ public class Screen implements com.badlogic.gdx.Screen {
         playerLaser = textureAtlas.findRegion("laserBlue01");
         enemyLaser = textureAtlas.findRegion("laserRed01");
 
-        player = new Ship(2,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,false);
-        enemy = new Ship(2,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,true);
+        player = new PlayerShip(2,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,playerLaser,false,.4f,4,.5f,45);
+        enemy = new EnemyShip(2,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,false,.4f,4,.8f,45);
 
         playerLaserL = new LinkedList<>();
         enemyLaserL = new LinkedList<>();
@@ -73,6 +74,8 @@ public class Screen implements com.badlogic.gdx.Screen {
     @Override
     public void render(float delta) {
         batch.begin();//always include begin and end in a render method
+        player.update(delta);
+        enemy.update(delta);
 
         //Scrolling bg
         renderBackground(delta);
@@ -82,7 +85,36 @@ public class Screen implements com.badlogic.gdx.Screen {
         enemy.draw(batch);
 
         //laser
+        if (player.canFireLaser()){
+            Laser[] lasers = player.fireLasers();
+            for (Laser i : lasers){
+                playerLaserL.add(i);
+            }
+        }
 
+        if (enemy.canFireLaser()){
+            Laser[] lasers = enemy.fireLasers();
+            for (Laser i : lasers){
+                enemyLaserL.add(i);
+            }
+        }
+
+        ListIterator<Laser> iterator = playerLaserL.listIterator();
+
+        while (iterator.hasNext()){
+            Laser laser = iterator.next();
+            laser.draw(batch);
+            laser.y += laser.speed*delta;
+            if (laser.y > WORLD_HEIGHT) iterator.remove();
+        }
+
+        iterator = enemyLaserL.listIterator();
+        while (iterator.hasNext()){
+            Laser laser = iterator.next();
+            laser.draw(batch);
+            laser.y -= laser.speed*delta;
+            if (laser.y + laser.height < 0) iterator.remove();
+        }
         batch.end();
     }
 

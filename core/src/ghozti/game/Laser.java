@@ -15,7 +15,7 @@ public class Laser {
     //graphics
     TextureRegion region;
 
-    public Laser(float speed, float x, float y, float width, float height, TextureRegion region) {
+    public Laser(float x, float y, float width, float height,float speed,  TextureRegion region) {
         this.speed = speed;
         this.x = x;
         this.y = y;
