@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.LinkedList;
@@ -28,6 +29,7 @@ public class Screen implements com.badlogic.gdx.Screen {
     //World
     private final int WORLD_WIDTH = 72;
     private final int WORLD_HEIGHT = 128;
+    private final float MOVEMENT_THRESHOLD = 0.5F;
     //objects
     private Ship player;
     private Ship enemy;
@@ -58,8 +60,8 @@ public class Screen implements com.badlogic.gdx.Screen {
         playerLaser = textureAtlas.findRegion("laserBlue01");
         enemyLaser = textureAtlas.findRegion("laserRed01");
 
-        player = new PlayerShip(2,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,playerLaser,false,.4f,4,.5f,45);
-        enemy = new EnemyShip(2,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,false,.4f,4,.8f,45);
+        player = new PlayerShip(106,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,playerLaser,false,.4f,4,.5f,45);
+        enemy = new EnemyShip(106,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,false,.4f,4,.8f,45);
 
         playerLaserL = new LinkedList<>();
         enemyLaserL = new LinkedList<>();
@@ -150,6 +152,28 @@ public class Screen implements com.badlogic.gdx.Screen {
             float yChange = -player.speed*delta;
             yChange = Math.max(yChange,downLimit);
             player.trasnlate(0f,yChange);
+        }
+        if(Gdx.input.isTouched()){
+            float touchX = Gdx.input.getX(),touchY = Gdx.input.getY();
+            Vector2 touchPoint = new Vector2(touchX,touchY);
+            touchPoint = viewport.unproject(touchPoint);
+            Vector2 playerCenter = new Vector2(player.boundingRect.x+player.boundingRect.width/2,player.boundingRect.y+player.boundingRect.height/2);
+            float touchDistance = touchPoint.dst(playerCenter);
+            if(touchDistance>MOVEMENT_THRESHOLD){
+                float xTouchDif = touchPoint.x - playerCenter.x, yTouchDif = touchPoint.y - playerCenter.y;
+                float xmove = xTouchDif/touchDistance*player.speed*delta;
+                float ymove = yTouchDif/touchDistance*player.speed*delta;
+
+                if (xmove > 0){
+                    xmove = Math.min(xmove,rightLimit);
+                }else xmove = Math.max(xmove,leftLimit);
+
+                if(ymove>0){
+                    ymove = Math.min(ymove,upLimit);
+                }else ymove = Math.max(ymove,downLimit);
+
+                player.trasnlate(xmove,ymove);
+            }
         }
     }
 
