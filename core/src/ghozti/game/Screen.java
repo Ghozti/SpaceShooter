@@ -29,10 +29,10 @@ public class Screen implements com.badlogic.gdx.Screen {
     //World
     private final int WORLD_WIDTH = 72;
     private final int WORLD_HEIGHT = 128;
-    private final float MOVEMENT_THRESHOLD = 0.5F;
+    private final float MOVEMENT_THRESHOLD = 0.8F;
     //objects
-    private Ship player;
-    private Ship enemy;
+    private PlayerShip player;
+    private EnemyShip enemy;
 
     //linked list
     LinkedList<Laser> playerLaserL;
@@ -61,7 +61,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         enemyLaser = textureAtlas.findRegion("laserRed01");
 
         player = new PlayerShip(106,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,playerLaser,false,.4f,4,.5f,45);
-        enemy = new EnemyShip(106,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,false,.4f,4,.8f,45);
+        enemy = new EnemyShip(106,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,true,.4f,4,.8f,45);
 
         playerLaserL = new LinkedList<>();
         enemyLaserL = new LinkedList<>();
@@ -161,6 +161,7 @@ public class Screen implements com.badlogic.gdx.Screen {
             float touchDistance = touchPoint.dst(playerCenter);
             if(touchDistance>MOVEMENT_THRESHOLD){
                 float xTouchDif = touchPoint.x - playerCenter.x, yTouchDif = touchPoint.y - playerCenter.y;
+
                 float xmove = xTouchDif/touchDistance*player.speed*delta;
                 float ymove = yTouchDif/touchDistance*player.speed*delta;
 
@@ -177,16 +178,35 @@ public class Screen implements com.badlogic.gdx.Screen {
         }
     }
 
+    public void moveEnemies(float delta){
+        float leftLimit = -enemy.boundingRect.x,
+                rightLimit = WORLD_WIDTH-enemy.boundingRect.x-enemy.boundingRect.width,
+                upLimit = WORLD_HEIGHT - enemy.boundingRect.y - enemy.boundingRect.height,
+                downLimit = WORLD_HEIGHT/2-player.boundingRect.y - player.boundingRect.height;
+
+        float xmove = enemy.getDirectionV().x*enemy.speed*delta;
+        float ymove = enemy.getDirectionV().y*enemy.speed*delta;
+
+        if (xmove > 0){
+            xmove = Math.min(xmove,rightLimit);
+        }else xmove = Math.max(xmove,leftLimit);
+
+        if(ymove>0){
+            ymove = Math.min(ymove,upLimit);
+        }else ymove = Math.max(ymove,downLimit);
+        enemy.trasnlate(xmove,ymove);
+    }
+
     @Override
     public void render(float delta) {
         batch.begin();//always include begin and end in a render method
         detectInput(delta);
+        moveEnemies(delta);
         player.update(delta);
         enemy.update(delta);
 
         //Scrolling bg
         renderBackground(delta);
-
         //ships
         player.draw(batch);
         enemy.draw(batch);

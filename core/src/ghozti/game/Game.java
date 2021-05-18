@@ -1,8 +1,12 @@
 package ghozti.game;
 
+import java.util.Random;
+
 public class Game extends com.badlogic.gdx.Game {
 
 	Screen screen;
+
+	public static Random rand = new Random();
 
 	@Override
 	public void create() {
