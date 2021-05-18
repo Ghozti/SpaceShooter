@@ -61,7 +61,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         enemyLaser = textureAtlas.findRegion("laserRed01");
 
         player = new PlayerShip(106,3,WORLD_WIDTH/2,WORLD_HEIGHT/4,10,10,playerShip,playerShield,playerLaser,false,.4f,4,.5f,45);
-        enemy = new EnemyShip(106,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,true,.4f,4,.8f,45);
+        enemy = new EnemyShip(2,1,WORLD_WIDTH/2,WORLD_HEIGHT*3/4,10,10,enemyShip,enemyShield,enemyLaser,true,.4f,4,.8f,45);
 
         playerLaserL = new LinkedList<>();
         enemyLaserL = new LinkedList<>();
@@ -182,7 +182,7 @@ public class Screen implements com.badlogic.gdx.Screen {
         float leftLimit = -enemy.boundingRect.x,
                 rightLimit = WORLD_WIDTH-enemy.boundingRect.x-enemy.boundingRect.width,
                 upLimit = WORLD_HEIGHT - enemy.boundingRect.y - enemy.boundingRect.height,
-                downLimit = WORLD_HEIGHT/2-player.boundingRect.y - player.boundingRect.height;
+                downLimit = (float)WORLD_HEIGHT/2-player.boundingRect.y;
 
         float xmove = enemy.getDirectionV().x*enemy.speed*delta;
         float ymove = enemy.getDirectionV().y*enemy.speed*delta;
